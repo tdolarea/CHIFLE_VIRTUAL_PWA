@@ -95,6 +95,38 @@
 
     .action-btn-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1.2; }
 
+    
+    /* Portalón compacto en altura */
+    .btn-portalon {
+      padding: 10px 12px !important; min-height: 42px !important;
+    }
+    .btn-portalon .action-btn-title {
+      font-size: 13px !important;
+    }
+
+    /* Contenedor Elcano ampliado con botón Play */
+    .elcano-flex {
+      display: flex; gap: 10px; align-items: stretch; margin-top: 6px;
+    }
+    .elcano-select {
+      flex: 1; width: 100%; background: #1e293b; color: #f8fafc; border: 1.5px solid #38bdf8;
+      border-radius: 10px; padding: 14px 16px; font-size: 15px; font-weight: 700;
+      outline: none; cursor: pointer; transition: 0.15s; min-height: 52px;
+    }
+    .elcano-select:focus { border-color: #60a5fa; background: #0f172a; }
+    .btn-elcano-play {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: white; border: 1.5px solid #38bdf8; border-radius: 10px;
+      padding: 0 22px; font-size: 14px; font-weight: 800; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      white-space: nowrap; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+      min-height: 52px; touch-action: manipulation; transition: all 0.15s ease;
+    }
+    .btn-elcano-play:active { transform: scale(0.97); }
+    .btn-elcano-play.disabled, .btn-elcano-play:disabled {
+      opacity: 0.35 !important; cursor: not-allowed !important; pointer-events: none !important;
+    }
+
     /* Desplegable Elcano */
     .custom-select-box {
       width: 100%; margin-top: 4px;
@@ -137,15 +169,15 @@
     <div class="card">
       <div class="card-title">🚪 Portalón</div>
       <div class="btn-grid-col1">
-        <button type="button" id="btnChifleMando" class="action-btn primary" onclick="tocarPitadaPortalon('audio/ComteoAlmte.mp3', 'ALMIRANTE O COMANDANTE', 'mando')">
+        <button type="button" id="btnChifleMando" class="action-btn primary btn-portalon" onclick="tocarPitadaPortalon('audio/ComteoAlmte.mp3', 'ALMIRANTE O COMANDANTE', 'mando')">
           <span class="action-btn-title">ALMIRANTE O COMANDANTE</span>
         </button>
 
-        <button type="button" id="btnChifleOficiales" class="action-btn primary" onclick="tocarPitadaPortalon('audio/oficiales.mp3', 'OFICIALES', 'oficiales')">
+        <button type="button" id="btnChifleOficiales" class="action-btn primary btn-portalon" onclick="tocarPitadaPortalon('audio/oficiales.mp3', 'OFICIALES', 'oficiales')">
           <span class="action-btn-title">OFICIALES</span>
         </button>
 
-        <button type="button" id="btnChifleRetirada" class="action-btn primary disabled" disabled onclick="tocarPitadaPortalon('audio/retiradaComteoAlmte.mp3', 'RETIRADA DE HONORES', 'retirada')">
+        <button type="button" id="btnChifleRetirada" class="action-btn primary btn-portalon disabled" disabled onclick="tocarPitadaPortalon('audio/retiradaComteoAlmte.mp3', 'RETIRADA DE HONORES', 'retirada')">
           <span class="action-btn-title">RETIRADA DE HONORES</span>
         </button>
       </div>
@@ -184,10 +216,13 @@
 
     <!-- BLOQUE 3: JS ELCANO -->
     <div class="card">
-      <div class="card-title">⛵ JS Elcano</div>
-      <div class="custom-select-box">
-        <select id="selElcano" class="elcano-select" onchange="onSelectElcanoChange(this)">
+      <div class="card-title" style="font-size: 14px;">⛵ JS Elcano</div>
+      <div class="elcano-flex">
+        <select id="selElcano" class="elcano-select">
 <option value="">-- Seleccionar toque de chifle --</option>\n            <option value="audio/JSE_Baldeo.mp3">Baldeo</option>\n            <option value="audio/JSE_baupres.mp3">Bauprés</option>\n            <option value="audio/JSE_braceo.mp3">Braceo</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_br.mp3">Braceo vergas simultáneo a BR</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_ER.mp3">Braceo vergas simultáneo a ER</option>\n            <option value="audio/JSE_contramaestre.mp3">Contramaestre</option>\n            <option value="audio/JSE_dentro_y_abajo.mp3">Dentro y abajo</option>\n            <option value="audio/JSE_descubierta.mp3">Descubierta</option>\n            <option value="audio/JSE_descubierta_gaviero_listo.mp3">Descubierta gaviero listo</option>\n            <option value="audio/JSE_gaviero.mp3">Gaviero</option>\n            <option value="audio/JSE_gavieros_arriba.mp3">Gavieros arriba</option>\n            <option value="audio/JSE_gavieros_fuera.mp3">Gavieros fuera</option>\n            <option value="audio/JSE_juanete.mp3">Juanete</option>\n            <option value="audio/JSE_llamada_a_la_guardia_de_cubierta.mp3">Llamada a la guardia de cubierta</option>\n            <option value="audio/JSE_MANIOBRA_GENERAL.mp3">MANIOBRA GENERAL</option>\n            <option value="audio/JSE_mayor_popel.mp3">Mayor popel</option>\n            <option value="audio/JSE_mayor_proel.mp3">Mayor proel</option>\n            <option value="audio/JSE_mesana.mp3">Mesana</option>\n            <option value="audio/JSE_trinquete.mp3">Trinquete</option>\n            <option value="audio/JSE_velacho_alto.mp3">Velacho alto</option>\n            <option value="audio/JSE_velacho_bajo.mp3">Velacho bajo</option>\n            <option value="audio/JSE_verga_trinquete.mp3">Verga trinquete</option>\n        </select>
+        <button type="button" id="btnPlayElcano" class="btn-elcano-play" onclick="tocarElcanoPlay()">
+          <span>▶️</span> <span>PLAY</span>
+        </button>
       </div>
     </div>
   </main>
@@ -200,7 +235,7 @@
   <audio id="audioPlayerChifle" preload="auto" playsinline></audio>
 
   <script>
-    const APP_VERSION = 'v1792954152';
+    const APP_VERSION = 'v1792954538';
 
     const audioPlayer = document.getElementById('audioPlayerChifle');
     let isPlayingAudio = false;
@@ -244,6 +279,12 @@
       if (selElcano) {
         selElcano.disabled = reproduciendo;
       }
+      const btnPlayElcano = document.getElementById('btnPlayElcano');
+      if (btnPlayElcano) {
+        btnPlayElcano.disabled = reproduciendo;
+        if (reproduciendo) btnPlayElcano.classList.add('disabled');
+        else btnPlayElcano.classList.remove('disabled');
+      }
     }
 
     function onAudioTerminadoGlobal() {
@@ -252,7 +293,7 @@
 
       // Reset select Elcano
       const selElcano = document.getElementById('selElcano');
-      if (selElcano) selElcano.value = '';
+      // Mantiene la selección del toque para poder repetir o consultar
 
       setControlsState(false);
     }
@@ -312,9 +353,16 @@
     }
 
     // 3. Pitadas de JS Elcano
-    function onSelectElcanoChange(sel) {
+    function tocarElcanoPlay() {
+      if (isPlayingAudio) return;
+      const sel = document.getElementById('selElcano');
+      if (!sel || !sel.value) {
+        // Breve advertencia visual si no ha seleccionado nada
+        sel.style.borderColor = '#ef4444';
+        setTimeout(() => { sel.style.borderColor = '#38bdf8'; }, 1000);
+        return;
+      }
       const src = sel.value;
-      if (!src) return;
       const label = sel.options[sel.selectedIndex].text;
       reproducirToque(src, label);
     }
