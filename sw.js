@@ -1,4 +1,4 @@
-// SW Chifle Virtual Portalon Monomódulo 1792953182
+// SW Chifle Virtual Portalon Monomódulo v1792953381
 self.addEventListener('install', e => self.skipWaiting());
 self.addEventListener('activate', e => {
   e.waitUntil(
