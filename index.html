@@ -33,42 +33,78 @@
       margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
     .card-title {
-      font-size: 12px; font-weight: 800; color: #38bdf8; text-transform: uppercase;
+      font-size: 13px; font-weight: 800; color: #38bdf8; text-transform: uppercase;
       letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
     }
 
+    /* Barra / Botón rojo de sonido en curso con botón PARAR */
+    .status-bar-box {
+      position: sticky; top: 64px; z-index: 99; margin-bottom: 14px;
+    }
     .status-bar {
-      background: #1e3a8a; border: 1px solid #38bdf8; border-radius: 8px; padding: 10px 14px;
-      margin-bottom: 14px; display: none; align-items: center; justify-content: space-between;
-      animation: pulse 2s infinite;
+      background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+      border: 1.5px solid #ef4444; border-radius: 10px; padding: 12px 16px;
+      display: none; align-items: center; justify-content: space-between;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+      animation: pulseAlert 1.8s infinite;
     }
-    @keyframes pulse { 0% { opacity: 0.9; } 50% { opacity: 1; } 100% { opacity: 0.9; } }
-    .status-bar-text { font-size: 13px; font-weight: 800; color: white; display: flex; align-items: center; gap: 8px; }
+    @keyframes pulseAlert {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .status-bar-text {
+      font-size: 13px; font-weight: 800; color: white; display: flex; align-items: center; gap: 8px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%;
+    }
     .status-bar-stop-btn {
-      background: #dc2626; border: none; color: white; padding: 6px 12px; border-radius: 6px;
-      font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase;
+      background: #ffffff; border: none; color: #991b1b; padding: 8px 14px; border-radius: 6px;
+      font-size: 11px; font-weight: 900; cursor: pointer; text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.1s;
     }
+    .status-bar-stop-btn:active { transform: scale(0.95); }
 
-    .btn-grid { display: flex; flex-direction: column; gap: 12px; }
+    /* Rejillas de botones */
+    .btn-grid-col1 { display: flex; flex-direction: column; gap: 10px; }
+    .btn-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
     .action-btn {
-      width: 100%; border: none; border-radius: 10px; padding: 16px 14px;
+      width: 100%; border: none; border-radius: 10px; padding: 14px 6px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; transition: all 0.15s ease; position: relative; overflow: hidden;
       box-shadow: 0 2px 4px rgba(0,0,0,0.3); touch-action: manipulation;
+      min-height: 52px; text-align: center;
     }
     .action-btn:active { transform: scale(0.98); }
-    .action-btn.disabled {
+    
+    /* Estado sombreado / deshabilitado cuando hay audio activo */
+    .action-btn.disabled, button:disabled, select:disabled {
       opacity: 0.35 !important; cursor: not-allowed !important; transform: none !important;
-      pointer-events: none;
+      pointer-events: none !important; filter: grayscale(40%);
     }
 
     .action-btn.primary {
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
       color: white; border: 1px solid #38bdf8;
     }
+    .action-btn.maniobra {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #f8fafc; border: 1.5px solid #3b82f6;
+    }
+    .action-btn.maniobra:hover { border-color: #60a5fa; background: #1e3a8a; }
 
-    .action-btn-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-    .action-btn-sub { font-size: 11px; opacity: 0.8; margin-top: 2px; font-weight: 600; }
+    .action-btn-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1.2; }
+
+    /* Desplegable Elcano */
+    .custom-select-box {
+      width: 100%; margin-top: 4px;
+    }}
+    .elcano-select {
+      width: 100%; background: #1e293b; color: #f8fafc; border: 1.5px solid #38bdf8;
+      border-radius: 8px; padding: 12px 14px; font-size: 13px; font-weight: 700;
+      outline: none; cursor: pointer; transition: 0.15s;
+    }
+    .elcano-select:focus { border-color: #60a5fa; background: #0f172a; }
 
     footer {
       background: #090e1a; border-top: 1px solid #1e293b; padding: 14px; text-align: center;
@@ -89,27 +125,69 @@
   </header>
 
   <main>
-    <div id="audioStatusBar" class="status-bar">
-      <div id="audioStatusText" class="status-bar-text">▶️ Reproduciendo...</div>
-      <button type="button" class="status-bar-stop-btn" onclick="stopAllAudio()">🛑 PARAR SONIDO</button>
+    <!-- BOTÓN ROJO FLOTANTE CON NOMBRE DE PITADA Y BOTÓN PARAR -->
+    <div class="status-bar-box">
+      <div id="audioStatusBar" class="status-bar">
+        <div id="audioStatusText" class="status-bar-text">▶️ Pitada en curso...</div>
+        <button type="button" class="status-bar-stop-btn" onclick="stopAllAudioChifle()">🛑 PARAR</button>
+      </div>
     </div>
 
-    <div class="view-section active" id="viewPortalon">
-      <div class="card">
-        <div class="card-title">🚪 Portalón</div>
-        <div class="btn-grid">
-          <button type="button" id="btnChifleMando" class="action-btn primary" onclick="tocarChifleMando()">
-            <span class="action-btn-title">ALMIRANTE O COMANDANTE</span>
-            </button>
+    <!-- BLOQUE 1: PORTALÓN -->
+    <div class="card">
+      <div class="card-title">🚪 Portalón</div>
+      <div class="btn-grid-col1">
+        <button type="button" id="btnChifleMando" class="action-btn primary" onclick="tocarPitadaPortalon('audio/ComteoAlmte.mp3', 'ALMIRANTE O COMANDANTE', 'mando')">
+          <span class="action-btn-title">ALMIRANTE O COMANDANTE</span>
+        </button>
 
-          <button type="button" id="btnChifleOficiales" class="action-btn primary" onclick="tocarChifleOficiales()">
-            <span class="action-btn-title">OFICIALES</span>
-            </button>
+        <button type="button" id="btnChifleOficiales" class="action-btn primary" onclick="tocarPitadaPortalon('audio/oficiales.mp3', 'OFICIALES', 'oficiales')">
+          <span class="action-btn-title">OFICIALES</span>
+        </button>
 
-          <button type="button" id="btnChifleRetirada" class="action-btn primary disabled" disabled onclick="tocarChifleRetirada()">
-            <span class="action-btn-title">RETIRADA DE HONORES</span>
-            </button>
-        </div>
+        <button type="button" id="btnChifleRetirada" class="action-btn primary disabled" disabled onclick="tocarPitadaPortalon('audio/retiradaComteoAlmte.mp3', 'RETIRADA DE HONORES', 'retirada')">
+          <span class="action-btn-title">RETIRADA DE HONORES</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- BLOQUE 2: MANIOBRA -->
+    <div class="card">
+      <div class="card-title">⚓ Maniobra</div>
+      
+      <!-- Fila 1: ENTRA / FORTE / LARGA -->
+      <div class="btn-grid-3" style="margin-bottom: 10px;">
+        <button type="button" id="btnManEntra" class="action-btn maniobra" onclick="tocarPitadaManiobra('audio/MAN_entrar.mp3', 'ENTRA')">
+          <span class="action-btn-title">ENTRA</span>
+        </button>
+        <button type="button" id="btnManForte" class="action-btn maniobra" onclick="tocarPitadaManiobra('audio/MAN_forte.mp3', 'FORTE')">
+          <span class="action-btn-title">FORTE</span>
+        </button>
+        <button type="button" id="btnManLarga" class="action-btn maniobra" onclick="tocarPitadaManiobra('audio/MAN_largar.mp3', 'LARGA')">
+          <span class="action-btn-title">LARGA</span>
+        </button>
+      </div>
+
+      <!-- Fila 2: Voy a lanzar guías / Listo y a cubierto / Pasada la Maniobra -->
+      <div class="btn-grid-3">
+        <button type="button" id="btnManGuias" class="action-btn maniobra" onclick="tocarPitadaManiobra('audio/RAS_voy_a_lanzar_guias.mp3', 'VOY A LANZAR GUÍAS')">
+          <span class="action-btn-title" style="font-size: 11px;">VOY A LANZAR GUÍAS</span>
+        </button>
+        <button type="button" id="btnManCubierto" class="action-btn maniobra" onclick="tocarPitadaManiobra('audio/RAS_listo_y_a_cubierto.mp3', 'LISTO Y A CUBIERTO')">
+          <span class="action-btn-title" style="font-size: 11px;">LISTO Y A CUBIERTO</span>
+        </button>
+        <button type="button" id="btnManPasada" class="action-btn maniobra" onclick="tocarPitadaManiobra('audio/RAS_pasada_la_maniobra.mp3', 'PASADA LA MANIOBRA')">
+          <span class="action-btn-title" style="font-size: 11px;">PASADA LA MANIOBRA</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- BLOQUE 3: JS ELCANO -->
+    <div class="card">
+      <div class="card-title">⛵ JS Elcano</div>
+      <div class="custom-select-box">
+        <select id="selElcano" class="elcano-select" onchange="onSelectElcanoChange(this)">
+<option value="">-- Seleccionar toque de chifle --</option>\n            <option value="audio/JSE_Baldeo.mp3">Baldeo</option>\n            <option value="audio/JSE_baupres.mp3">Bauprés</option>\n            <option value="audio/JSE_braceo.mp3">Braceo</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_br.mp3">Braceo vergas simultáneo a BR</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_ER.mp3">Braceo vergas simultáneo a ER</option>\n            <option value="audio/JSE_contramaestre.mp3">Contramaestre</option>\n            <option value="audio/JSE_dentro_y_abajo.mp3">Dentro y abajo</option>\n            <option value="audio/JSE_descubierta.mp3">Descubierta</option>\n            <option value="audio/JSE_descubierta_gaviero_listo.mp3">Descubierta gaviero listo</option>\n            <option value="audio/JSE_gaviero.mp3">Gaviero</option>\n            <option value="audio/JSE_gavieros_arriba.mp3">Gavieros arriba</option>\n            <option value="audio/JSE_gavieros_fuera.mp3">Gavieros fuera</option>\n            <option value="audio/JSE_juanete.mp3">Juanete</option>\n            <option value="audio/JSE_llamada_a_la_guardia_de_cubierta.mp3">Llamada a la guardia de cubierta</option>\n            <option value="audio/JSE_MANIOBRA_GENERAL.mp3">MANIOBRA GENERAL</option>\n            <option value="audio/JSE_mayor_popel.mp3">Mayor popel</option>\n            <option value="audio/JSE_mayor_proel.mp3">Mayor proel</option>\n            <option value="audio/JSE_mesana.mp3">Mesana</option>\n            <option value="audio/JSE_trinquete.mp3">Trinquete</option>\n            <option value="audio/JSE_velacho_alto.mp3">Velacho alto</option>\n            <option value="audio/JSE_velacho_bajo.mp3">Velacho bajo</option>\n            <option value="audio/JSE_verga_trinquete.mp3">Verga trinquete</option>\n        </select>
       </div>
     </div>
   </main>
@@ -118,131 +196,127 @@
     Chifle Virtual · Armada Española · @TDF 2025
   </footer>
 
-  <!-- AUDIOS PORTALÓN -->
-  <audio id="audMando" src="audio/ComteoAlmte.mp3" preload="auto" playsinline></audio>
-  <audio id="audOficiales" src="audio/oficiales.mp3" preload="auto" playsinline></audio>
-  <audio id="audRetirada" src="audio/retiradaComteoAlmte.mp3" preload="auto" playsinline></audio>
+  <!-- REPRODUCTOR ÚNICO DE CHIFLE -->
+  <audio id="audioPlayerChifle" preload="auto" playsinline></audio>
 
   <script>
-    const APP_VERSION = 'v1792953447';
+    const APP_VERSION = 'v1792954152';
 
+    const audioPlayer = document.getElementById('audioPlayerChifle');
+    let isPlayingAudio = false;
     let mandoChifleActivo = false;
-    let ultimoToque = null;
-    let currentActiveAudio = null;
+    let ultimoToquePortalon = null;
 
-    const audMando = document.getElementById('audMando');
-    const audOficiales = document.getElementById('audOficiales');
-    const audRetirada = document.getElementById('audRetirada');
-
-    [audMando, audOficiales, audRetirada].forEach(a => {
-      if (a) {
-        a.onended = () => { onAudioTerminado(); };
-        a.onerror = () => { onAudioTerminado(); };
-      }
-    });
-
-    function onAudioTerminado() {
-      const statusBox = document.getElementById('audioStatusBar');
-      if (statusBox) statusBox.style.display = 'none';
-      desbloquearSegunCeremonial();
+    if (audioPlayer) {
+      audioPlayer.onended = () => { onAudioTerminadoGlobal(); };
+      audioPlayer.onerror = (e) => {
+        console.error('Error reproductor audio:', e);
+        onAudioTerminadoGlobal();
+      };
     }
 
-    function stopAllAudio() {
-      [audMando, audOficiales, audRetirada].forEach(a => {
-        if (a) {
-          try { a.pause(); a.currentTime = 0; } catch(e){}
+    // Deshabilitar (sombrear) todos los botones y select cuando hay sonido en curso
+    function setControlsState(reproduciendo) {
+      isPlayingAudio = reproduciendo;
+      
+      const allButtons = document.querySelectorAll('.action-btn');
+      allButtons.forEach(btn => {
+        if (reproduciendo) {
+          btn.classList.add('disabled');
+        } else {
+          // Si termina el audio, restaurar según lógica de Portalón o habilitar
+          if (btn.id === 'btnChifleRetirada') {
+            if (mandoChifleActivo) {
+              btn.classList.remove('disabled');
+              btn.disabled = false;
+            } else {
+              btn.classList.add('disabled');
+              btn.disabled = true;
+            }
+          } else {
+            btn.classList.remove('disabled');
+            btn.disabled = false;
+          }
         }
       });
+
+      const selElcano = document.getElementById('selElcano');
+      if (selElcano) {
+        selElcano.disabled = reproduciendo;
+      }
+    }
+
+    function onAudioTerminadoGlobal() {
       const statusBox = document.getElementById('audioStatusBar');
       if (statusBox) statusBox.style.display = 'none';
-      onAudioTerminado();
+
+      // Reset select Elcano
+      const selElcano = document.getElementById('selElcano');
+      if (selElcano) selElcano.value = '';
+
+      setControlsState(false);
     }
 
-    function tocarChifleMando() {
-      stopAllAudio();
-      ultimoToque = 'mando';
-      bloquearTodosBotonesPortalon();
-      
-      const statusBox = document.getElementById('audioStatusBar');
-      const statusText = document.getElementById('audioStatusText');
-      if (statusBox) statusBox.style.display = 'flex';
-      if (statusText) statusText.textContent = '▶️ CHIFLE: Almirante o Comandante';
-
-      if (audMando) {
-        currentActiveAudio = audMando;
-        audMando.currentTime = 0;
-        audMando.play().catch(e => {
-          console.error('Error audMando:', e);
-          onAudioTerminado();
-        });
+    function stopAllAudioChifle() {
+      if (audioPlayer) {
+        try {
+          audioPlayer.pause();
+          audioPlayer.currentTime = 0;
+        } catch(e) {}
       }
+      onAudioTerminadoGlobal();
     }
 
-    function tocarChifleOficiales() {
-      stopAllAudio();
-      ultimoToque = 'oficiales';
-      bloquearTodosBotonesPortalon();
+    function reproducirToque(src, nombrePitada) {
+      stopAllAudioChifle();
 
       const statusBox = document.getElementById('audioStatusBar');
       const statusText = document.getElementById('audioStatusText');
       if (statusBox) statusBox.style.display = 'flex';
-      if (statusText) statusText.textContent = '▶️ CHIFLE: Oficiales';
+      if (statusText) statusText.textContent = '▶️ ' + nombrePitada;
 
-      if (audOficiales) {
-        currentActiveAudio = audOficiales;
-        audOficiales.currentTime = 0;
-        audOficiales.play().catch(e => {
-          console.error('Error audOficiales:', e);
-          onAudioTerminado();
+      setControlsState(true);
+
+      if (audioPlayer) {
+        audioPlayer.src = src;
+        audioPlayer.currentTime = 0;
+        audioPlayer.play().catch(err => {
+          console.error('Error play:', err);
+          onAudioTerminadoGlobal();
         });
       }
     }
 
-    function tocarChifleRetirada() {
-      if (!mandoChifleActivo) return;
-      stopAllAudio();
-      ultimoToque = 'retirada';
-      bloquearTodosBotonesPortalon();
+    // 1. Pitadas de Portalón
+    function tocarPitadaPortalon(src, label, tipo) {
+      if (isPlayingAudio) return;
 
-      const statusBox = document.getElementById('audioStatusBar');
-      const statusText = document.getElementById('audioStatusText');
-      if (statusBox) statusBox.style.display = 'flex';
-      if (statusText) statusText.textContent = '▶️ CHIFLE: Retirada Almte / Comte';
-
-      if (audRetirada) {
-        currentActiveAudio = audRetirada;
-        audRetirada.currentTime = 0;
-        audRetirada.play().catch(e => {
-          console.error('Error audRetirada:', e);
-          onAudioTerminado();
-        });
-      }
-    }
-
-    function bloquearTodosBotonesPortalon() {
-      const btnMando = document.getElementById('btnChifleMando');
-      const btnOficiales = document.getElementById('btnChifleOficiales');
-      const btnRet = document.getElementById('btnChifleRetirada');
-      if (btnMando) { btnMando.classList.add('disabled'); btnMando.disabled = true; }
-      if (btnOficiales) { btnOficiales.classList.add('disabled'); btnOficiales.disabled = true; }
-      if (btnRet) { btnRet.classList.add('disabled'); btnRet.disabled = true; }
-    }
-
-    function desbloquearSegunCeremonial() {
-      const btnMando = document.getElementById('btnChifleMando');
-      const btnOficiales = document.getElementById('btnChifleOficiales');
-      const btnRet = document.getElementById('btnChifleRetirada');
-
-      if (btnMando) { btnMando.classList.remove('disabled'); btnMando.disabled = false; }
-      if (btnOficiales) { btnOficiales.classList.remove('disabled'); btnOficiales.disabled = false; }
-
-      if (ultimoToque === 'mando') {
+      if (tipo === 'mando') {
         mandoChifleActivo = true;
-        if (btnRet) { btnRet.classList.remove('disabled'); btnRet.disabled = false; }
-      } else {
+        ultimoToquePortalon = 'mando';
+      } else if (tipo === 'oficiales') {
         mandoChifleActivo = false;
-        if (btnRet) { btnRet.classList.add('disabled'); btnRet.disabled = true; }
+        ultimoToquePortalon = 'oficiales';
+      } else if (tipo === 'retirada') {
+        mandoChifleActivo = false;
+        ultimoToquePortalon = 'retirada';
       }
+
+      reproducirToque(src, label);
+    }
+
+    // 2. Pitadas de Maniobra
+    function tocarPitadaManiobra(src, label) {
+      if (isPlayingAudio) return;
+      reproducirToque(src, label);
+    }
+
+    // 3. Pitadas de JS Elcano
+    function onSelectElcanoChange(sel) {
+      const src = sel.value;
+      if (!src) return;
+      const label = sel.options[sel.selectedIndex].text;
+      reproducirToque(src, label);
     }
 
     // WakeLock API
