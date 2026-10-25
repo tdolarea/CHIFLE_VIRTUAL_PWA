@@ -1,4 +1,4 @@
-// SW Chifle Virtual Integral 1792954538
+// SW Chifle Virtual Integral 1792955397
 self.addEventListener('install', e => self.skipWaiting());
 self.addEventListener('activate', e => {
   e.waitUntil(

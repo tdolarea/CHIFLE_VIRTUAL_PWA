@@ -219,7 +219,7 @@
       <div class="card-title" style="font-size: 14px;">⛵ JS Elcano</div>
       <div class="elcano-flex">
         <select id="selElcano" class="elcano-select">
-<option value="">-- Seleccionar toque de chifle --</option>\n            <option value="audio/JSE_Baldeo.mp3">Baldeo</option>\n            <option value="audio/JSE_baupres.mp3">Bauprés</option>\n            <option value="audio/JSE_braceo.mp3">Braceo</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_br.mp3">Braceo vergas simultáneo a BR</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_ER.mp3">Braceo vergas simultáneo a ER</option>\n            <option value="audio/JSE_contramaestre.mp3">Contramaestre</option>\n            <option value="audio/JSE_dentro_y_abajo.mp3">Dentro y abajo</option>\n            <option value="audio/JSE_descubierta.mp3">Descubierta</option>\n            <option value="audio/JSE_descubierta_gaviero_listo.mp3">Descubierta gaviero listo</option>\n            <option value="audio/JSE_gaviero.mp3">Gaviero</option>\n            <option value="audio/JSE_gavieros_arriba.mp3">Gavieros arriba</option>\n            <option value="audio/JSE_gavieros_fuera.mp3">Gavieros fuera</option>\n            <option value="audio/JSE_juanete.mp3">Juanete</option>\n            <option value="audio/JSE_llamada_a_la_guardia_de_cubierta.mp3">Llamada a la guardia de cubierta</option>\n            <option value="audio/JSE_MANIOBRA_GENERAL.mp3">MANIOBRA GENERAL</option>\n            <option value="audio/JSE_mayor_popel.mp3">Mayor popel</option>\n            <option value="audio/JSE_mayor_proel.mp3">Mayor proel</option>\n            <option value="audio/JSE_mesana.mp3">Mesana</option>\n            <option value="audio/JSE_trinquete.mp3">Trinquete</option>\n            <option value="audio/JSE_velacho_alto.mp3">Velacho alto</option>\n            <option value="audio/JSE_velacho_bajo.mp3">Velacho bajo</option>\n            <option value="audio/JSE_verga_trinquete.mp3">Verga trinquete</option>\n        </select>
+<option value="">Seleccione toque de chifle</option>\n            <option value="audio/JSE_Baldeo.mp3">Baldeo</option>\n            <option value="audio/JSE_baupres.mp3">Bauprés</option>\n            <option value="audio/JSE_braceo.mp3">Braceo</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_br.mp3">Braceo vergas simultáneo a BR</option>\n            <option value="audio/JSE_braceo_vergas_simultaneo_a_ER.mp3">Braceo vergas simultáneo a ER</option>\n            <option value="audio/JSE_contramaestre.mp3">Contramaestre</option>\n            <option value="audio/JSE_dentro_y_abajo.mp3">Dentro y abajo</option>\n            <option value="audio/JSE_descubierta.mp3">Descubierta</option>\n            <option value="audio/JSE_descubierta_gaviero_listo.mp3">Descubierta gaviero listo</option>\n            <option value="audio/JSE_gaviero.mp3">Gaviero</option>\n            <option value="audio/JSE_gavieros_arriba.mp3">Gavieros arriba</option>\n            <option value="audio/JSE_gavieros_fuera.mp3">Gavieros fuera</option>\n            <option value="audio/JSE_juanete.mp3">Juanete</option>\n            <option value="audio/JSE_llamada_a_la_guardia_de_cubierta.mp3">Llamada a la guardia de cubierta</option>\n            <option value="audio/JSE_MANIOBRA_GENERAL.mp3">MANIOBRA GENERAL</option>\n            <option value="audio/JSE_mayor_popel.mp3">Mayor popel</option>\n            <option value="audio/JSE_mayor_proel.mp3">Mayor proel</option>\n            <option value="audio/JSE_mesana.mp3">Mesana</option>\n            <option value="audio/JSE_trinquete.mp3">Trinquete</option>\n            <option value="audio/JSE_velacho_alto.mp3">Velacho alto</option>\n            <option value="audio/JSE_velacho_bajo.mp3">Velacho bajo</option>\n            <option value="audio/JSE_verga_trinquete.mp3">Verga trinquete</option>\n        </select>
         <button type="button" id="btnPlayElcano" class="btn-elcano-play" onclick="tocarElcanoPlay()">
           <span>▶️</span> <span>PLAY</span>
         </button>
@@ -235,7 +235,7 @@
   <audio id="audioPlayerChifle" preload="auto" playsinline></audio>
 
   <script>
-    const APP_VERSION = 'v1792954538';
+    const APP_VERSION = 'v1792955397';
 
     const audioPlayer = document.getElementById('audioPlayerChifle');
     let isPlayingAudio = false;
@@ -291,9 +291,12 @@
       const statusBox = document.getElementById('audioStatusBar');
       if (statusBox) statusBox.style.display = 'none';
 
-      // Reset select Elcano
+      // Resetea el desplegable a 'Seleccione toque de chifle'
       const selElcano = document.getElementById('selElcano');
-      // Mantiene la selección del toque para poder repetir o consultar
+      if (selElcano) {
+        selElcano.value = '';
+        selElcano.selectedIndex = 0;
+      }
 
       setControlsState(false);
     }
